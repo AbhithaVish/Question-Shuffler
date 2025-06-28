@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Assignment Question Shuffler</title>
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --light: #f9f9f9;
+      --dark: #333;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: var(--primary);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    .member {
+      background-color: #f1f1f1;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+
+      button {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Group Assignment Question Shuffler</h2>
+
+    <input type="text" id="memberName" placeholder="Enter team member name" />
+    <button onclick="addMember()">Add Member</button>
+
+    <h3>Team Members:</h3>
+    <ul id="memberList"></ul>
+
+    <button onclick="shuffleQuestions()">Shuffle Questions</button>
+
+    <div id="results"></div>
+  </div>
+
+  <script>
+    const members = [];
+    const questions = [
+      "1. Explain the functions of different functional areas of the selected construction firm and evaluate their information needs. (LO1)",
+      "2. Identify the types of information systems in the functional areas and explain their relevant functions. (LO2)",
+      "3. Analyze information systems used in competitor organizations and current trends. (LO2)",
+      "4. Evaluate suitability of different information systems for different functional areas. (LO2)",
+      "5. Critically analyze how one information system helps management decision making, supported by evidence. (LO3)",
+      "6. Identify business problems, propose alternative solutions, and evaluate them. (LO4)",
+      "7. Suggest latest information systems and justify the decision. (LO4)"
+    ];
+
+    function addMember() {
+      const nameInput = document.getElementById("memberName");
+      const name = nameInput.value.trim();
+      if (name && !members.includes(name)) {
+        members.push(name);
+        nameInput.value = "";
+        updateMemberList();
+      }
+    }
+
+    function updateMemberList() {
+      const list = document.getElementById("memberList");
+      list.innerHTML = "";
+      members.forEach(name => {
+        const li = document.createElement("li");
+        li.textContent = name;
+        list.appendChild(li);
+      });
+    }
+
+    function shuffleQuestions() {
+      if (members.length === 0) {
+        alert("Please add at least one member before shuffling.");
+        return;
+      }
+
+      const shuffled = [...questions].sort(() => 0.5 - Math.random());
+      const assignments = {};
+      members.forEach(member => assignments[member] = []);
+
+      shuffled.forEach((q, index) => {
+        const member = members[index % members.length];
+        assignments[member].push(q);
+      });
+
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "<h3>Shuffled Question Assignments:</h3>";
+      for (const member of members) {
+        const div = document.createElement("div");
+        div.className = "member";
+        div.innerHTML = `<strong>${member}:</strong><ul>${assignments[member].map(q => `<li>${q}</li>`).join('')}</ul>`;
+        resultsDiv.appendChild(div);
+      }
+    }
+  </script>
+
+</body>
+</html>
