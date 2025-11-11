@@ -1,110 +1,173 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Group Assignment Question Shuffler</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Group Assignment Shuffler — Modern UI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #4CAF50;
-      --light: #f9f9f9;
-      --dark: #333;
+    :root{
+      --bg:#0f1724; /* deep navy */
+      --card:#0b1220;
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.65);
+      --accent: linear-gradient(135deg,#7c3aed 0%, #06b6d4 100%);
+      --success: #10b981;
+      --radius: 14px;
     }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--light);
-      color: var(--dark);
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent 8%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(6,182,212,0.08), transparent 10%),
+                  var(--bg);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      padding:32px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-
-    h2, h3 {
-      text-align: center;
-      color: var(--primary);
+    .app{
+      width:100%;
+      max-width:920px;
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:22px;
     }
-
-    .container {
-      width: 100%;
-      max-width: 600px;
-      background-color: white;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      backdrop-filter: blur(6px) saturate(120%);
     }
+    header h1{font-size:20px;margin:0 0 6px 0;font-weight:700}
+    header p{margin:0;color:var(--muted);font-size:13px}/* left column */
+.controls{
+  display:flex;flex-direction:column;gap:12px;
+}
+.input-row{display:flex;gap:10px}
+.input-row input{
+  flex:1;padding:12px 14px;border-radius:10px;border:none;background:var(--glass);color:inherit;outline:none;font-size:15px;
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.02);
+}
+.btn{
+  background:var(--accent);
+  -webkit-background-clip:text; /* show gradient on text */
+  background-clip:text;color:transparent;padding:0;border:none;
+}
+.primary{
+  display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;color:white;background:var(--accent);box-shadow:0 6px 18px rgba(3,7,18,0.6);
+}
+.secondary{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);cursor:pointer;font-weight:600
+}
 
-    input[type="text"] {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
+/* member list */
+.members{
+  display:flex;flex-direction:column;gap:10px;margin-top:6px;
+  max-height:300px;overflow:auto;padding-right:6px
+}
+.member{
+  display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.02);
+}
+.avatar{
+  min-width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#374151 0%, #111827 100%);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px
+}
+.mname{flex:1;font-weight:600}
+.mactions{display:flex;gap:8px}
+.small{font-size:13px;padding:6px 10px;border-radius:8px}
 
-    button {
-      background-color: var(--primary);
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-bottom: 20px;
-      width: 100%;
-    }
+/* right column - results */
+.results{
+  display:flex;flex-direction:column;gap:12px;
+}
+.assignments{
+  display:grid;grid-template-columns:1fr;gap:10px;overflow:auto;max-height:520px;padding-right:6px
+}
+.assignment-card{
+  padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)
+}
+.assignment-card h4{margin:0 0 8px 0;font-size:14px}
+.question-list{margin:0;padding-left:18px;color:var(--muted);font-size:14px}
 
-    button:hover {
-      background-color: #45a049;
-    }
+/* footer actions */
+.footer-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:8px}
 
-    ul {
-      padding-left: 20px;
-    }
+/* small helpers */
+.hint{font-size:13px;color:var(--muted)}
 
-    li {
-      margin-bottom: 5px;
-    }
+/* responsive */
+@media (max-width:860px){
+  .app{grid-template-columns:1fr;}
+  .results{order:2}
+}
 
-    .member {
-      background-color: #f1f1f1;
-      border-radius: 12px;
-      padding: 12px;
-      margin-top: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
+/* subtle animation */
+.pulse{animation:pulse 1.8s infinite}
+@keyframes pulse{0%{transform:translateY(0)}50%{transform:translateY(-4px)}100%{transform:translateY(0)}}
 
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-      }
-
-      button {
-        font-size: 15px;
-      }
-    }
   </style>
 </head>
 <body>
-
-  <div class="container">
-    <h2>Group Assignment Question Shuffler</h2>
-
-    <input type="text" id="memberName" placeholder="Enter team member name" />
-    <button onclick="addMember()">Add Member</button>
-
-    <h3>Team Members:</h3>
-    <ul id="memberList"></ul>
-
-    <button onclick="shuffleQuestions()">Shuffle Questions</button>
-
-    <div id="results"></div>
+  <div class="app">
+    <div class="card controls">
+      <header>
+        <h1>Group Assignment Question Shuffler</h1>
+        <p class="hint">Add members, then shuffle to assign questions fairly — optimized for group work.</p>
+      </header><div style="display:flex;gap:12px;margin-top:12px;">
+    <div style="flex:1">
+      <div class="input-row">
+        <input id="memberName" placeholder="Enter team member name (press Enter to add)" aria-label="team member name">
+        <button id="addBtn" class="secondary small">Add</button>
+      </div>
+      <div class="hint" style="margin-top:8px">Tip: Duplicate names are ignored. Click the trash icon to remove a member.</div>
+    </div>
+    <div style="width:160px;display:flex;flex-direction:column;gap:8px;align-items:stretch">
+      <button id="shuffleBtn" class="primary pulse" title="Shuffle and assign">Shuffle & Assign</button>
+      <button id="clearBtn" class="secondary small">Clear All</button>
+    </div>
   </div>
 
-  <script>
+  <h3 style="margin:16px 0 6px 0;font-size:13px;color:var(--muted)">Team Members</h3>
+  <div id="memberList" class="members" aria-live="polite"></div>
+
+  <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px">
+    <div class="hint">Questions: 7 &middot; Balanced distribution</div>
+    <div style="display:flex;gap:8px">
+      <button id="exportBtn" class="secondary small">Copy Assignments</button>
+      <button id="downloadBtn" class="secondary small">Download JSON</button>
+    </div>
+  </div>
+</div>
+
+<div class="card results">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div>
+      <h2 style="margin:0;font-size:18px">Assignments</h2>
+      <div class="hint" id="assignedHint">No assignments yet — press Shuffle & Assign.</div>
+    </div>
+    <div class="hint">Made with ❤️</div>
+  </div>
+
+  <div id="results" class="assignments">
+    <!-- assignment cards appear here -->
+  </div>
+
+  <div class="footer-actions">
+    <button id="resetAssignments" class="secondary small">Reset Assignments</button>
+  </div>
+</div>
+
+  </div>  <script>
+    // data
     const members = [];
     const questions = [
       "1. Explain the functions of different functional areas of the selected construction firm and evaluate their information needs. (LO1)",
@@ -116,51 +179,116 @@
       "7. Suggest latest information systems and justify the decision. (LO4)"
     ];
 
-    function addMember() {
-      const nameInput = document.getElementById("memberName");
-      const name = nameInput.value.trim();
-      if (name && !members.includes(name)) {
-        members.push(name);
-        nameInput.value = "";
-        updateMemberList();
-      }
+    // elements
+    const nameInput = document.getElementById('memberName');
+    const addBtn = document.getElementById('addBtn');
+    const memberList = document.getElementById('memberList');
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    const resultsContainer = document.getElementById('results');
+    const assignedHint = document.getElementById('assignedHint');
+    const clearBtn = document.getElementById('clearBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resetAssignmentsBtn = document.getElementById('resetAssignments');
+
+    // helpers
+    function initials(name){
+      return name.split(' ').map(s=>s.charAt(0).toUpperCase()).slice(0,2).join('');
     }
 
-    function updateMemberList() {
-      const list = document.getElementById("memberList");
-      list.innerHTML = "";
-      members.forEach(name => {
-        const li = document.createElement("li");
-        li.textContent = name;
-        list.appendChild(li);
+    function renderMembers(){
+      memberList.innerHTML='';
+      members.forEach((m, idx) =>{
+        const div=document.createElement('div');div.className='member';
+        div.innerHTML = `
+          <div class="avatar" title="${m}">${initials(m)}</div>
+          <div class="mname">${m}</div>
+          <div class="mactions">
+            <button class="secondary small" data-idx="${idx}" title="Remove">🗑</button>
+          </div>
+        `;
+        memberList.appendChild(div);
+      });
+      // attach remove listeners
+      memberList.querySelectorAll('button[data-idx]').forEach(btn=>{
+        btn.addEventListener('click', e=>{
+          const i = Number(e.currentTarget.dataset.idx);
+          members.splice(i,1); renderMembers(); clearResults();
+        });
       });
     }
 
-    function shuffleQuestions() {
-      if (members.length === 0) {
-        alert("Please add at least one member before shuffling.");
-        return;
+    function addMember(){
+      const val = nameInput.value.trim();
+      if(!val) return;
+      if(members.includes(val)){
+        nameInput.value='';nameInput.focus();return;
       }
+      members.push(val);
+      nameInput.value='';nameInput.focus();renderMembers();
+    }
 
-      const shuffled = [...questions].sort(() => 0.5 - Math.random());
+    addBtn.addEventListener('click', addMember);
+    nameInput.addEventListener('keydown', e=>{ if(e.key==='Enter'){ addMember(); } });
+
+    function shuffleArray(arr){
+      // Fisher-Yates
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    let lastAssignments = null;
+    function shuffleQuestions(){
+      if(members.length===0){ alert('Please add at least one member.'); return; }
+      const shuffled = shuffleArray(questions);
       const assignments = {};
-      members.forEach(member => assignments[member] = []);
-
-      shuffled.forEach((q, index) => {
-        const member = members[index % members.length];
+      members.forEach(m=>assignments[m]=[]);
+      shuffled.forEach((q,i)=>{
+        const member = members[i % members.length];
         assignments[member].push(q);
       });
-
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "<h3>Shuffled Question Assignments:</h3>";
-      for (const member of members) {
-        const div = document.createElement("div");
-        div.className = "member";
-        div.innerHTML = `<strong>${member}:</strong><ul>${assignments[member].map(q => `<li>${q}</li>`).join('')}</ul>`;
-        resultsDiv.appendChild(div);
-      }
+      lastAssignments = assignments;
+      renderAssignments(assignments);
     }
-  </script>
 
-</body>
+    function renderAssignments(assignments){
+      resultsContainer.innerHTML='';
+      for(const m of members){
+        const card = document.createElement('div'); card.className='assignment-card';
+        const qs = assignments[m] || [];
+        card.innerHTML = `\n          <h4>${m} <span style="font-weight:600;color:var(--muted);font-size:12px"> — ${qs.length} item(s)</span></h4>\n          <ol class="question-list">${qs.map(s=>'<li>'+s+'</li>').join('')}</ol>\n        `;
+        resultsContainer.appendChild(card);
+      }
+      assignedHint.textContent = `Assigned ${questions.length} question(s) to ${members.length} member(s).`;
+    }
+
+    function clearResults(){
+      resultsContainer.innerHTML='';assignedHint.textContent='No assignments yet — press Shuffle & Assign.';lastAssignments=null;
+    }
+
+    shuffleBtn.addEventListener('click', ()=>{ shuffleQuestions(); });
+    clearBtn.addEventListener('click', ()=>{ if(confirm('Clear all members?')){ members.length=0; renderMembers(); clearResults(); } });
+
+    exportBtn.addEventListener('click', ()=>{
+      if(!lastAssignments){ alert('No assignments to copy. Run Shuffle & Assign first.'); return; }
+      const text = Object.entries(lastAssignments).map(([k,v])=>`${k}:\n${v.map((q,i)=>`  ${i+1}. ${q}`).join('\n')}`).join('\n\n');
+      navigator.clipboard.writeText(text).then(()=>alert('Assignments copied to clipboard.'));
+    });
+
+    downloadBtn.addEventListener('click', ()=>{
+      if(!lastAssignments){ alert('No assignments to download. Run Shuffle & Assign first.'); return; }
+      const blob = new Blob([JSON.stringify(lastAssignments,null,2)],{type:'application/json'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download='assignments.json'; a.click(); URL.revokeObjectURL(url);
+    });
+
+    resetAssignmentsBtn.addEventListener('click', ()=>{ clearResults(); });
+
+    // seed example for demo (optional)
+    // members.push('Alice Johnson','Bob Lee'); renderMembers();
+  </script></body>
 </html>
